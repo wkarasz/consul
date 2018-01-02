@@ -2,7 +2,7 @@
 Consul server with web UI
 
 Clone the repo and then build the docker image
-	docker build -t tibco/consul:0.7.5 .
+	`docker build -t tibco/consul:0.7.5 .`
 
 To launch a standalone Consul server, use:
 
