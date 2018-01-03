@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul-svc
+  labels:
+    app: consul-svc
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8500
+    targetPort: http-ui
+    nodePort: 30090
+  selector:
+    app: consul
+    tier: backend
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: consul-dply
+  labels:
+    app: consul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+        tier: backend
+    spec:
+      containers:
+      - name: consul-agent-node1
+        image: consul:0.7.5
+        args: ["-server", "-bootstrap"]
+        ports:
+        - name: http-ui
+          containerPort: 8500
+        - containerPort: 8400
+        - containerPort: 8600
